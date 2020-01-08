@@ -26,8 +26,8 @@ export default new Router({
                 },
                 {
                     path: '/table',
-                    component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
-                    meta: { title: '基础表格' }
+                    component: () => import(/* webpackChunkName: "table" */ '../components/page/ArticleList.vue'),
+                    meta: { title: '文章管理' }
                 },
                 {
                     path: '/tabs',

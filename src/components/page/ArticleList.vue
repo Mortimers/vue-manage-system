@@ -3,13 +3,13 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 文章管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
+                <!-- <el-button
                     type="primary"
                     icon="el-icon-delete"
                     class="handle-del mr10"
@@ -18,10 +18,15 @@
                 <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
                     <el-option key="1" label="广东省" value="广东省"></el-option>
                     <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
+                </el-select> -->
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
             </div>
+            <form action="admin/toLocal" enctype="multipart/form-data" method="post">
+                <input type="file" name="upload" id="upload" multiple="multiple" value="" />
+                <input type="submit" name="" id="" value="点击上传" />
+            </form>
             <el-table
                 :data="tableData"
                 border
@@ -30,13 +35,10 @@
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column label="账户余额">
-                    <template slot-scope="scope">￥{{scope.row.money}}</template>
-                </el-table-column>
-                <el-table-column label="头像(查看大图)" align="center">
+                <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
+                <el-table-column prop="id" label="序号" width="55" align="center"></el-table-column>
+                <el-table-column prop="name" label="文章标题"></el-table-column>
+                <el-table-column label="文章简图" align="center">
                     <template slot-scope="scope">
                         <el-image
                             class="table-td-thumb"
@@ -45,7 +47,7 @@
                         ></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" label="地址"></el-table-column>
+                <!-- <el-table-column prop="address" label="地址"></el-table-column> -->
                 <el-table-column label="状态" align="center">
                     <template slot-scope="scope">
                         <el-tag
@@ -54,7 +56,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="date" label="注册时间"></el-table-column>
+                <el-table-column prop="date" label="创建时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -92,6 +94,19 @@
                 <el-form-item label="地址">
                     <el-input v-model="form.address"></el-input>
                 </el-form-item>
+
+				<el-form-item label="分享图片">
+					<el-upload
+						:on-success="handleAvatarSuccess"
+						class="upload-demo"
+						action="/admin/toLocal"
+						:limit="1"
+						list-type="picture"
+						>
+						<i class="el-icon-upload"></i>
+						<div class="el-upload__tip" slot="tip">只能上传jpg、jpeg、png文件，且不超过500kb</div>
+					</el-upload>
+				</el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -102,7 +117,7 @@
 </template>
 
 <script>
-import { fetchData } from '../../api/index';
+// import { fetchData } from '../../api/index';
 export default {
     name: 'basetable',
     data() {
@@ -124,7 +139,7 @@ export default {
         };
     },
     created() {
-        this.getData();
+        // this.getData();
     },
     methods: {
         // 获取 easy-mock 的模拟数据
@@ -139,7 +154,14 @@ export default {
         handleSearch() {
             this.$set(this.query, 'pageIndex', 1);
             this.getData();
-        },
+		},
+		// 添加文章
+		handleAdd() {
+			this.editVisible = true;
+			this.$api.addArticle().then(res => {
+
+			})
+		},
         // 删除操作
         handleDelete(index, row) {
             // 二次确认删除

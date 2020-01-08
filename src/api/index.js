@@ -7,3 +7,13 @@ export const fetchData = query => {
         params: query
     });
 };
+
+export default {
+    addArticle: (data) => request({
+        url: '/admin/login',
+        method: 'post',
+        params: data
+    }),
+    uploadSnsImage: () => ('/upload/toLocal'),
+
+}
